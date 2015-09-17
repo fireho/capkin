@@ -8,23 +8,21 @@ Gem::Specification.new do |s|
   s.version     = Capkin::VERSION
   s.platform    = Gem::Platform::RUBY
 
-  s.authors     = ['Marcos Piccinini']
-  s.homepage    = 'http://github.com/nofxx/hooray'
-  s.email       = 'x@nofxx.com'
-  s.description = 'Find all those devices connected in LAN'
-  s.summary     = 'Find devices connected in LAN'
+  s.authors     = ['Marcos Piccinini', 'Jorge Fernando']
+  s.homepage    = 'http://github.com/fireho/capkin'
+  s.email       = 'see@github.com'
+  s.description = 'Uploads your apps to Google Play'
+  s.summary     = 'Uploads your apps to Google Play'
   s.license     = 'MIT'
 
-  s.executables = ['hoo']
-  s.default_executable = 'hoo'
+  s.executables = ['capkin']
+  s.default_executable = 'capkin'
 
   s.files = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.require_paths = ["lib"]
+  s.require_paths = ['lib']
 
   s.add_dependency 'thor'
   s.add_dependency 'paint'
-  s.add_dependency 'macaddr'
-  s.add_dependency 'net-ping'
-  s.add_dependency 'table_print'
+  s.add_dependency 'google-api-client'
 end
