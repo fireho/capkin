@@ -32,3 +32,18 @@ name: 'Foo'
 app: 'com.your.app'
 build: 'build/'
 ```
+
+
+## Login/Auth
+
+On Google Developer:
+
+### JSON Key
+
+* APIs & auth > Credentials > Add credential > Service Account > JSON
+
+
+
+### Client/Secret
+
+* APIs & auth > Credentials > Add credential > OAuth 2.0 client ID > Other
