@@ -1,0 +1,7 @@
+# Capkin Uploader config file
+#
+# Change for your app
+#
+name: MyApp
+app: com.my.app
+build: build/
