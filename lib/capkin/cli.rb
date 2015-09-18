@@ -8,8 +8,9 @@ module Capkin
       #
       def check_capkin_file
         return if File.exist?('Capkin')
-        puts 'Creating Capkin File'
-        FileUtils.cp File.dirname(__FILE__) + '/Capkin', '.'
+        puts Paint['Creating Capkin file...', :red]
+        FileUtils.cp File.join(File.dirname(__FILE__), 'Capkin'), '.'
+        puts Paint['Config file `Capkin` created, edit and re-run.', :green]
         exit
       end
 
