@@ -12,14 +12,21 @@ module Capkin
   # auth.apply(headers)
   class Robot
     SCOPE = ['https://www.googleapis.com/auth/androidpublisher']
+    STAGE = 'alpha'
     attr_reader :apk, :app, :pub, :pkg, :stage, :track, :source
 
-    def initialize(config, stage = 'alpha')
+    def initialize(config, stage = nil)
       @app = config['app']
       @pkg = config['name']
       @source ||= File.join(config['build'], "#{@app}.apk")
-      @stage = stage
+      stage = stage.join if stage.respond_to?(:join)
+      @stage = stage.strip.empty? ? STAGE : stage.strip
 
+      init_google
+      puts Paint["Publishing new APK: ./#{source} → '#{@stage}'", :blue]
+    end
+
+    def init_google
       # Get authorization!
       @auth = Google::Auth.get_application_default(SCOPE)
       # create a publisher object
@@ -32,18 +39,28 @@ module Capkin
       @edit ||= pub.insert_edit(pkg)
     end
 
+    def track
+      @track ||= pub.get_track(pkg, edit.id, stage)
+    end
+
     def upload_apk!
-      puts Paint["Publishing new APK: ./#{source} to 'Play'", :blue]
       # upload the APK
       @apk = pub.upload_apk(pkg, edit.id, upload_source: source)
-      puts Paint["APK uploaded #{apk.version_code}", :yellow]
+      puts Paint["APK uploaded! ##{apk.version_code}", :green]
       track!
+      puts Paint["All done! ##{apk.inspect}", :green]
+    rescue Google::Apis::ClientError => e
+      if e.to_s =~ /apkUpgradeVersionConflict/
+        puts Paint["Version #{apk.version_code} already on play store!", :red]
+      else
+        puts Paint["Problem with upload: #{e}", :red]
+        raise e
+      end
     end
 
     def track!
+      puts Paint["Pushing APK → '#{@track.track}'", :blue]
       # Update the alpha track to point to this APK
-      @track = pub.get_track(pkg, edit.id, stage)
-
       # You need to use a track object to change this
       track.update!(version_codes: [apk.version_code])
       commit!
@@ -55,6 +72,9 @@ module Capkin
 
       # Commit the edit
       pub.commit_edit(pkg, edit.id)
+    rescue Google::Apis::ClientError => e
+      puts Paint["Problem commiting: #{e}", :red]
+      raise e
     end
   end
 end

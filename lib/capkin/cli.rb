@@ -16,7 +16,7 @@ module Capkin
 
       def read_file
         @config = YAML.load_file('Capkin')
-        msg = "Config file OK! '#{@config['app']}' -> #{@config['name']}"
+        msg = "Config file OK! '#{@config['app']}' [#{@config['name']}]"
         puts Paint[msg, :green]
       end
 
