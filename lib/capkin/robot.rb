@@ -23,7 +23,7 @@ module Capkin
       @stage = stage.strip.empty? ? STAGE : stage.strip
 
       init_google
-      puts Paint["Publishing new APK: ./#{source} → '#{@stage}'", :blue]
+      puts Paint["Publishing new APK: ./#{source} ➔ '#{@stage}'", :blue]
     end
 
     def init_google
@@ -34,7 +34,7 @@ module Capkin
       @pub.authorization = @auth
     end
 
-    # Create new edition
+    # Create new editio
     def edit
       @edit ||= pub.insert_edit(pkg)
     end
@@ -43,37 +43,38 @@ module Capkin
       @track ||= pub.get_track(pkg, edit.id, stage)
     end
 
+    # Uploads the APK
     def upload_apk!
-      # upload the APK
       @apk = pub.upload_apk(pkg, edit.id, upload_source: source)
-      puts Paint["APK uploaded! ##{apk.version_code}", :green]
+      puts Paint["✓ APK uploaded! ##{apk.version_code}", :green]
       track!
-      puts Paint["All done! ##{apk.inspect}", :green]
+      puts Paint["✓ All done! ##{apk.inspect}", :green]
     rescue Google::Apis::ClientError => e
       if e.to_s =~ /apkUpgradeVersionConflict/
-        puts Paint["Version #{apk.version_code} already on play store!", :red]
+        puts Paint['✓ Version already exists on play store!', :yellow]
       else
-        puts Paint["Problem with upload: #{e}", :red]
+        puts Paint["✗ Problem with upload: #{e}", :red]
         raise e
       end
     end
 
+    # Update the alpha track to point to this APK
+    # You need to use a track object to change this
     def track!
-      puts Paint["Pushing APK → '#{@track.track}'", :blue]
-      # Update the alpha track to point to this APK
-      # You need to use a track object to change this
+      puts Paint["Pushing APK ➔ '#{@track.track}'", :blue]
       track.update!(version_codes: [apk.version_code])
-      commit!
-    end
 
-    def commit!
       # Save the modified track object
       pub.update_track(pkg, edit.id, stage, track)
 
-      # Commit the edit
+      commit!
+    end
+
+    # Commit the edit
+    def commit!
       pub.commit_edit(pkg, edit.id)
     rescue Google::Apis::ClientError => e
-      puts Paint["Problem commiting: #{e}", :red]
+      puts Paint["✗ Problem commiting: #{e}", :red]
       raise e
     end
   end

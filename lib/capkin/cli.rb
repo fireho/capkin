@@ -10,13 +10,13 @@ module Capkin
         return if File.exist?('Capkin')
         puts Paint['Creating Capkin file...', :red]
         FileUtils.cp File.join(File.dirname(__FILE__), 'Capkin'), '.'
-        puts Paint['Config file `Capkin` created, edit and re-run.', :green]
+        puts Paint['✓ Config file `Capkin` created, edit and re-run.', :green]
         exit
       end
 
       def read_file
         @config = YAML.load_file('Capkin')
-        msg = "Config file OK! '#{@config['app']}' [#{@config['name']}]"
+        msg = "✓ Config file OK! '#{@config['app']}' [#{@config['name']}]"
         puts Paint[msg, :green]
       end
 
