@@ -1,9 +1,9 @@
 Capkin
 ======
 
-
-* Upload your `Android Apps`  to `Google Play`
-* Uploads your apks to Alpha, Beta or Production
+* Upload your `Android Apps` ➔ `Google Play`
+* Uploads your `.apk` to Alpha, Beta or Production stages.
+* Promote apk from stages.
 
 
 ## Install
@@ -14,15 +14,17 @@ Capkin
 
 ## Use
 
-Inside your project folder:
+To upload a new `.apk`:
 
-
-```
+```sh
 capkin production
 capkin beta
 capkin alpha
 ```
 
+To move current version to another stage:
+
+**TODO**
 
 ## Capkin
 
@@ -51,11 +53,16 @@ On Play:
 > APIs & auth > Credentials > Add credential > Service Account > JSON
 
 
+```sh
+export GOOGLE_APPLICATION_CREDENTIALS='/path/to/googs.json'
+```
+
+
 ### Client/Secret
 
 > APIs & auth > Credentials > Add credential > OAuth 2.0 client ID > Other
 
+**TODO**
 
-### TODO
 
-* Move already uploaded apk from stages
+## Capkin
