@@ -11,6 +11,7 @@ Capkin
 
     gem install capkin
 
+
 ## Use
 
 Inside your project folder:
@@ -38,12 +39,23 @@ build: 'build/'
 
 On Google Developer:
 
+> Create a new project
+
+On Play:
+
+> Settings > API access > Link your developer project
+
+
 ### JSON Key
 
-* APIs & auth > Credentials > Add credential > Service Account > JSON
-
+> APIs & auth > Credentials > Add credential > Service Account > JSON
 
 
 ### Client/Secret
 
-* APIs & auth > Credentials > Add credential > OAuth 2.0 client ID > Other
+> APIs & auth > Credentials > Add credential > OAuth 2.0 client ID > Other
+
+
+### TODO
+
+* Move already uploaded apk from stages
