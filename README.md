@@ -1,8 +1,8 @@
 Capkin
 ======
 
-* Upload your `Android Apps` ➔ `Google Play`
-* Uploads your `.apk` to Alpha, Beta or Production stages.
+* Uploads your `Android Apps` ➔ `Google Play`
+* Choose upload to Alpha, Beta or Production stage.
 * Promote apk from stages.
 
 
@@ -28,12 +28,12 @@ To move current version to another stage:
 
 ## Capkin
 
-Config file:
+Config file (just run `capkin` to generate):
 
 ```
-name: 'Foo'
-app: 'com.your.app'
-build: 'build/'
+app: 'Foo'             # App name
+name: 'com.your.app'   # App namespace
+build: 'build/'        # App apk folder
 ```
 
 
@@ -65,4 +65,8 @@ export GOOGLE_APPLICATION_CREDENTIALS='/path/to/googs.json'
 **TODO**
 
 
-## Capkin
+## Cordova Rake
+
+If you're using cordova/phonegap/ionic, also check out:
+
+https://github.com/nofxx/cordova-rake
