@@ -1,57 +1,72 @@
 module Capkin
+  # Capking Command Line
   class CLI
-
-    def self.check_capkin_file
-      unless File.exist?('Capkin')
+    # Using class methods
+    class << self
+      #
+      # Check config file
+      #
+      def check_capkin_file
+        return if File.exist?('Capkin')
         puts 'Creating Capkin File'
         FileUtils.cp File.dirname(__FILE__) + '/Capkin', '.'
         exit
       end
-    end
 
-    def self.read_file
-      @config = YAML.load_file('Capkin')
-      puts @config
-    end
+      def read_file
+        @config = YAML.load_file('Capkin')
+        puts @attr = config
+      end
 
-    def self.upload_apk
-      #get the authorization
-      scopes = ['https://www.googleapis.com/auth/androidpublisher']
-      auth = Google::Auth.get_application_default(scopes)
+      # To be refactored in robot.rb
+      def upload_apk
+        # Get package
+        app = @config['name']
+        source = @config['build'] + app + '.apk'
 
-      headers = {
-        'access_token'=> ENV['CAPKIN_CLIENT']
-      }
+        # create a publisher object
+        pub = Google::Apis::AndroidpublisherV2::AndroidPublisherService.new
 
-      auth.apply(headers)
+        # Oauth2
+        # grant_type=authorization_token|refresh_token
+        # code=
+        # client_id=<the client ID token created in the APIs Console>
+        # client_secret=<the client secret corresponding to the client ID>
+        # refresh_token=<the refresh token from the previous step>
+        # start a new edit
+        headers = {
+          'access_token' => ENV['CAPKIN_CLIENT']
+        }
 
-      pkg_name = @config['name']
-      source = @config['build'] + pkg_name + '.apk'
-      # create a publisher object
-      publisher = Google::Apis::AndroidpublisherV2::AndroidPublisherService.new
-      publisher.authorization = auth
+        # Get authorization!
+        scopes = ['https://www.googleapis.com/auth/androidpublisher']
+        auth = Google::Auth.get_application_default(scopes)
+        auth.apply(headers)
 
-      # start a new edit
-      edit = publisher.insert_edit(pkg_name)
+        pub.authorization = auth
+        edit = pub.insert_edit(app)
 
-      # upload the APK
-      apk = publisher.upload_apk(pkg_name, edit.id, upload_source: source)
+        # upload the APK
+        apk = pub.upload_apk(app, edit.id, upload_source: source)
 
-      # update the alpha track to point to this APK
-      track = publisher.get_track(pkg_name, edit_id, 'alpha')
-      track.update!(version_codes: [ apk.version_code ]) # you need to use a track object to change this
-      publisher.update_track(pkg_name, edit_id, 'production', track) # save the modified track object
+        # update the alpha track to point to this APK
+        track = pub.get_track(app, edit_id, 'alpha')
 
-      # commit the edit
-      publisher.commit_edit(pkg_name, edit_id)
-    end
+        # you need to use a track object to change this
+        track.update!(version_codes: [apk.version_code])
 
-    def self.work!(params)
-      check_capkin_file
-      read_file
-      upload_apk
+        # save the modified track object
+        pub.update_track(app, edit_id, 'production', track)
+
+        # commit the edit
+        pub.commit_edit(app, edit_id)
+      end
+
+      def self.work!(params)
+        check_capkin_file
+        read_file
+        upload_apk
+      end
     end
   end
-
-
 end
