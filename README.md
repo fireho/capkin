@@ -1,6 +1,10 @@
 Capkin
 ======
 
+[![Gem Version](https://badge.fury.io/rb/capkin.svg)](http://badge.fury.io/rb/capkin)
+[![Dependency Status](https://gemnasium.com/fireho/capkin.svg)](https://gemnasium.com/fireho/capkin)
+
+
 * Uploads your `Android Apps` ➔ `Google Play`
 * Choose upload to Alpha, Beta or Production stage.
 * Promote apk from stages.
