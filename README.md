@@ -20,19 +20,24 @@ Capkin
 
 To upload a new `.apk`:
 
-```sh
-capkin production
-capkin beta
-capkin alpha
-```
+
+
+    capkin production
+    capkin beta
+    capkin # defaults to 'alpha'
+
+
 
 To move current version to another stage:
 
+
 **TODO**
+
 
 ## Capkin
 
 Config file (just run `capkin` to generate):
+
 
 ```
 app: 'Foo'             # App name
@@ -65,6 +70,7 @@ export GOOGLE_APPLICATION_CREDENTIALS='/path/to/googs.json'
 ### Client/Secret
 
 > APIs & auth > Credentials > Add credential > OAuth 2.0 client ID > Other
+
 
 **TODO**
 
