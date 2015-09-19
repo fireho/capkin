@@ -10,6 +10,11 @@ module Capkin
   #   'access_token' => ENV['CAPKIN_CLIENT']
   # }
   # auth.apply(headers)
+  #
+  # https://developers.google.com/android-publisher/api-ref/edits
+  #
+  # https://github.com/google/google-api-ruby-client/issues/140
+  #
   class Robot
     SCOPE = ['https://www.googleapis.com/auth/androidpublisher']
     STAGE = 'alpha'
@@ -61,7 +66,7 @@ module Capkin
     # Update the alpha track to point to this APK
     # You need to use a track object to change this
     def track!
-      puts Paint["Pushing APK ➔ '#{@track.track}'", :blue]
+      puts Paint["Pushing APK ➔ '#{track.track}'", :blue]
       track.update!(version_codes: [apk.version_code])
 
       # Save the modified track object
