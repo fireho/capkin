@@ -18,8 +18,12 @@ Capkin
 
 ## Use
 
-To upload a new `.apk`:
+To upload a **new** `.apk`:
 
+**TODO**
+
+
+To upload a **new version** `.apk`:
 
 
     capkin production
