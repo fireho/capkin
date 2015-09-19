@@ -2,6 +2,6 @@
 #
 # Change for your app
 #
-name: MyApp
-app: com.my.app
+app: MyApp
+name: com.my.app
 build: build/
