@@ -2,6 +2,7 @@ require 'pry'
 require 'yaml'
 require 'paint'
 require 'fileutils'
+require 'ruby_apk'
 
 require 'googleauth'
 require 'google/apis/androidpublisher_v2'

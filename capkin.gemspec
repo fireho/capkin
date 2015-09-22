@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'thor'
   s.add_dependency 'paint'
+  s.add_dependency 'ruby_apk'
   s.add_dependency 'google-api-client', '0.9.pre3'
   s.add_dependency 'googleauth'
 end
