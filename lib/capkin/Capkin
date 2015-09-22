@@ -3,5 +3,4 @@
 # Change for your app
 #
 app: MyApp
-name: com.my.app
 build: build/

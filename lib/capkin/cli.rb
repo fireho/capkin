@@ -16,14 +16,22 @@ module Capkin
 
       def read_file
         @config = YAML.load_file('Capkin')
-        msg = "✓ Config file OK! '#{@config['app']}' [#{@config['name']}]"
+        msg = "✓ Config file OK! '#{@config['app']}'"
         puts Paint[msg, :green]
       end
 
       def work!(params)
         check_capkin_file
         read_file
-        Capkin::Robot.new(@config, params).upload_apk!
+
+        robot = Capkin::Robot.new(@config, params)
+        case params.join
+        when 'list' then robot.list
+        when 'info' then robot.info
+        else
+          puts Paint["Publishing new APK: ./#{source} ➔ '#{@stage}'", :blue]
+          robot.upload_apk!
+        end
       end
     end
   end

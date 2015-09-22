@@ -22,19 +22,18 @@ module Capkin
 
     def initialize(config, stage = nil)
       @app = config['app']
-      @pkg = config['name']
       @source ||= File.join(config['build'], "#{@app}.apk")
       stage = stage.join if stage.respond_to?(:join)
       @stage = stage.strip.empty? ? STAGE : stage.strip
 
+      @pkg = namespace
       init_google
-      puts Paint["Publishing new APK: ./#{source} ➔ '#{@stage}'", :blue]
     end
 
     def init_google
       # Get authorization!
       @auth = Google::Auth.get_application_default(SCOPE)
-      # create a publisher object
+      # Create a publisher object
       @pub = Google::Apis::AndroidpublisherV2::AndroidPublisherService.new
       @pub.authorization = @auth
     end
@@ -48,12 +47,54 @@ module Capkin
       @track ||= pub.get_track(pkg, edit.id, stage)
     end
 
+    def subject # the apk
+      @current_apk ||= Android::Apk.new(source)
+    end
+
+    def app_name
+      subject.manifest.label
+    end
+
+    def namespace
+      subject.manifest.package_name
+    end
+
+    def current_version
+      subject.manifest.version_code
+    end
+
+    def apk_date
+      subject.time.strftime('%Y-%m-%d')
+    end
+
+    #
+    #
+    # pub.list_listings ->  Info about the app
+    # def all_listings ??
+
+    #
+    # pub.list_apks     ->  Lists with idcode and sha1
+    def list
+      puts "➔ Listing all APK! Current #{current_version} - #{apk_date}"
+      pub.list_apks(pkg, edit.id).apks.each do |a|
+        color = current_version == a.version_code ? :green : :black
+        puts Paint["#{a.version_code} ➔ #{a.binary.sha1}", color]
+      end
+    end
+
+    def info
+      a = pub.get_listing(pkg, edit.id, 'pt-BR')
+      puts "\n#{a.title} - #{a.short_description}"
+      puts '---'
+      puts a.full_description
+      puts
+    end
+
     # Uploads the APK
     def upload_apk!
       @apk = pub.upload_apk(pkg, edit.id, upload_source: source)
-      puts Paint["✓ APK uploaded! ##{apk.version_code}", :green]
       track!
-      puts Paint["✓ All done! ##{apk.inspect}", :green]
+      puts Paint["✓ APK uploaded! ##{apk.version_code}", :green]
     rescue Google::Apis::ClientError => e
       if e.to_s =~ /apkUpgradeVersionConflict/
         puts Paint['✓ Version already exists on play store!', :yellow]
@@ -66,7 +107,6 @@ module Capkin
     # Update the alpha track to point to this APK
     # You need to use a track object to change this
     def track!
-      puts Paint["Pushing APK ➔ '#{track.track}'", :blue]
       track.update!(version_codes: [apk.version_code])
 
       # Save the modified track object
