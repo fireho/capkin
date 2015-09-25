@@ -101,6 +101,35 @@ module Capkin
       puts
     end
 
+    #
+    # Edit the apk info!
+    def edit_info
+      puts Paint["Editing the info about: #{namespace}", :blue]
+
+      # Create a Listing object
+      puts "Enter new title: "
+      title = $stdin.gets.chomp
+
+      puts "Enter the short description: "
+      short_description = $stdin.gets.chomp
+
+      puts "Enter the full description: "
+      full_description = $stdin.gets.chomp
+
+      listing = Google::Apis::AndroidpublisherV2::Listing.new
+      listing.full_description = full_description
+      listing.short_description = short_description
+      listing.title = title
+
+      # Dispacth the info
+      list = pub.update_listing(pkg, edit.id, "pt-BR", listing)
+
+      # Commit the changes
+      commit!
+      puts Paint["Alterações realizadas :)", :green]
+
+    end
+
     # Uploads the APK
     def upload_apk!
       verify_apk_before_upload
@@ -132,9 +161,6 @@ module Capkin
           exit
         end
       end
-
-
-
     end
 
     # Update the alpha track to point to this APK
