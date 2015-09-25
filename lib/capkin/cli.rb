@@ -29,7 +29,7 @@ module Capkin
         when 'list' then robot.list
         when 'info' then robot.info
         else
-          puts Paint["Publishing new APK: ./#{source} ➔ '#{@stage}'", :blue]
+          puts Paint["Publishing new APK: ➔ Stage: '#{@stage}'", :blue]
           robot.upload_apk!
         end
       end

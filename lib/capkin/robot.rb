@@ -38,7 +38,7 @@ module Capkin
       @pub.authorization = @auth
     end
 
-    # Create new editio
+    # Create new edition
     def edit
       @edit ||= pub.insert_edit(pkg)
     end
@@ -59,10 +59,12 @@ module Capkin
       subject.manifest.package_name
     end
 
+    # show the current version about your apk.
     def current_version
       subject.manifest.version_code
     end
 
+    # show the creation date of your apk.
     def apk_date
       subject.time.strftime('%Y-%m-%d')
     end
@@ -76,12 +78,21 @@ module Capkin
     # pub.list_apks     ->  Lists with idcode and sha1
     def list
       puts "➔ Listing all APK! Current #{current_version} - #{apk_date}"
-      pub.list_apks(pkg, edit.id).apks.each do |a|
+      versions = verify_versions
+      versions.each do |a|
         color = current_version == a.version_code ? :green : :black
         puts Paint["#{a.version_code} ➔ #{a.binary.sha1}", color]
       end
     end
 
+    def verify_versions
+      list_apks = pub.list_apks(pkg, edit.id)
+      return list_apks.apks
+    end
+
+    #
+    # Show the play store info about your apk.
+    #
     def info
       a = pub.get_listing(pkg, edit.id, 'pt-BR')
       puts "\n#{a.title} - #{a.short_description}"
@@ -92,8 +103,12 @@ module Capkin
 
     # Uploads the APK
     def upload_apk!
+      verify_apk_before_upload
+
       @apk = pub.upload_apk(pkg, edit.id, upload_source: source)
+
       track!
+
       puts Paint["✓ APK uploaded! ##{apk.version_code}", :green]
     rescue Google::Apis::ClientError => e
       if e.to_s =~ /apkUpgradeVersionConflict/
@@ -102,6 +117,24 @@ module Capkin
         puts Paint["✗ Problem with upload: #{e}", :red]
         raise e
       end
+    end
+
+    # Verify if the version apk already existis on Play store
+    def verify_apk_before_upload
+      play_store_apks = verify_versions
+      apk_exists = false
+
+      play_store_apks.each do |apk|
+        apk_exists = current_version == apk.version_code ? "true" : "false"
+
+        if apk_exists
+          puts Paint["The apk already uploaded to Play Store!", :red]
+          exit
+        end
+      end
+
+
+
     end
 
     # Update the alpha track to point to this APK
