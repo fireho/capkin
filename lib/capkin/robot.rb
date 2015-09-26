@@ -92,36 +92,3 @@ module Capkin
   # End class
   end
 end
-
-
-
-    # Create new edit
-#    def edit
-#      @edit ||= publisher.insert_edit(pkg)
-#    end
-
-#    def track
-#      @track ||= publisher.get_track(pkg, edit.id, stage)
-#    end
-
-#    def subject # the apk
-#      @current_apk ||= Android::Apk.new(source)
-#    end
-
-#    def app_name
-#      subject.manifest.label
-#    end
-
-#    def namespace
-#      subject.manifest.package_name
-#    end
-
-    # show the current version about your apk.
-#    def current_version
-#      subject.manifest.version_code
-#    end
-
-    # show the creation date of your apk.
-#    def apk_date
-#      subject.time.strftime('%Y-%m-%d')
-#    end

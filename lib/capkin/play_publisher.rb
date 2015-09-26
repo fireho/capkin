@@ -81,7 +81,7 @@ module Capkin
       pub.update_listing(pkg, edit.id, "pt-BR", listing)
 
       # Commit the changes
-      commit
+      commit!
     end
 
    # Uploads the APK
