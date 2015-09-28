@@ -15,7 +15,12 @@ module Capkin
         case params.join
         when 'list' then robot.list
         when 'info' then robot.info_apk
-        when 'edit_info' then robot.edit_info
+        when 'edit_info' then
+          info = project.read_apk_info
+          robot.edit_info(info)
+        when 'get_info' then
+          info = robot.get_info_apk
+          project.write_edit_info_to_file(info)
         else
           robot.upload_apk!
         end

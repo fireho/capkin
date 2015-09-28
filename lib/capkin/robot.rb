@@ -50,25 +50,34 @@ module Capkin
       puts
     end
 
+    def get_info_apk
+      a = publisher.info_apk
+      return a
+    end
+
     #
     # Edit the apk info!
-    def edit_info
+    def edit_info(info)
       puts Paint["Editing the info about: #{publisher.namespace}", :blue]
 
       # Create a Listing object
-      puts "Enter new title: "
-      title = $stdin.gets.chomp
+    #  puts "Enter new title: "
+    #  title = $stdin.gets.chomp
 
-      puts "Enter the short description: "
-      short_description = $stdin.gets.chomp
+    #  puts "Enter the short description: "
+    #  short_description = $stdin.gets.chomp
 
-      puts "Enter the full description: "
-      full_description = $stdin.gets.chomp
+    #  puts "Enter the full description: "
+    #  full_description = $stdin.gets.chomp
 
+    #  listing = Google::Apis::AndroidpublisherV2::Listing.new
+    #  listing.full_description = full_description
+    #  listing.short_description = short_description
+    #  listing.title = title
       listing = Google::Apis::AndroidpublisherV2::Listing.new
-      listing.full_description = full_description
-      listing.short_description = short_description
-      listing.title = title
+      listing.full_description = info['full_description']
+      listing.short_description = info['short_description']
+      listing.title = info['title']
 
       publisher.edit_info(listing)
 
