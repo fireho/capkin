@@ -1,6 +1,0 @@
-# Capkin Uploader config file
-#
-# Change for your app
-#
-app: MyApp
-build: build/

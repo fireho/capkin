@@ -11,4 +11,6 @@ require 'google/apis/androidpublisher_v2'
 module Capkin
   autoload :CLI, 'capkin/cli'
   autoload :Robot, 'capkin/robot'
+  autoload :Project, 'capkin/project'
+  autoload :PlayPublisher, 'capkin/play_publisher'
 end
