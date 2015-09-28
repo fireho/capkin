@@ -60,20 +60,6 @@ module Capkin
     def edit_info(info)
       puts Paint["Editing the info about: #{publisher.namespace}", :blue]
 
-      # Create a Listing object
-    #  puts "Enter new title: "
-    #  title = $stdin.gets.chomp
-
-    #  puts "Enter the short description: "
-    #  short_description = $stdin.gets.chomp
-
-    #  puts "Enter the full description: "
-    #  full_description = $stdin.gets.chomp
-
-    #  listing = Google::Apis::AndroidpublisherV2::Listing.new
-    #  listing.full_description = full_description
-    #  listing.short_description = short_description
-    #  listing.title = title
       listing = Google::Apis::AndroidpublisherV2::Listing.new
       listing.full_description = info['full_description']
       listing.short_description = info['short_description']

@@ -41,9 +41,14 @@ module Capkin
     end
 
     def read_apk_info
-      @info = YAML.load_file('ApkInfo')
-      puts Paint['Apk Info loaded!', :green]
-      return @info
+      if File.exist?('ApkInfo')
+        @info = YAML.load_file('ApkInfo')
+        puts Paint['Apk Info loaded!', :green]
+        return @info
+      else
+        puts Paint['ApkInfo not found, run "capkin get_info" to get the info about your app', :red]
+        exit
+      end
     end
 
 

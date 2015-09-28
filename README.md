@@ -45,7 +45,6 @@ Config file (just run `capkin` to generate):
 
 ```
 app: 'Foo'             # App name
-name: 'com.your.app'   # App namespace
 build: 'build/'        # App apk folder
 ```
 
