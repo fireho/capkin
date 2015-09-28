@@ -30,13 +30,17 @@ module Capkin
     # Write the Apk info to file
     #
     def write_edit_info_to_file(info)
+      #serialized = YAML::dump(info)
+      #binding.pry
       File.open("ApkInfo", "w") do |file|
         file.write("title: #{info.title} \n")
+        file.write("language: #{info.language} \n")
         file.write("short_description: #{info.short_description} \n")
-        file.write("full_description: |+\n \t#{info.full_description}")
+        file.write("full_description: |+\n #{info.full_description.gsub("\n", "\n  ")}")
+      #file.write(serialized.to_s)
       end
 
-      msg = 'Apk info was written, edit and run "capkin edit_info" to upload the changes :)'
+      msg = 'Apk info was written, edit and run "capkin update_info" to upload the changes :)'
       puts Paint[msg, :green]
     end
 

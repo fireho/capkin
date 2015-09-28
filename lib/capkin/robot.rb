@@ -64,6 +64,7 @@ module Capkin
       listing.full_description = info['full_description']
       listing.short_description = info['short_description']
       listing.title = info['title']
+      listing.language = info['language']
 
       publisher.edit_info(listing)
 

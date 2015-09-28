@@ -78,7 +78,7 @@ module Capkin
     # Edit the apk info!
     def edit_info(listing)
       # Dispacth the info
-      pub.update_listing(pkg, edit.id, "pt-BR", listing)
+      pub.update_listing(pkg, edit.id, listing.language, listing)
 
       # Commit the changes
       commit!
