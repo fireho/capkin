@@ -3,7 +3,21 @@ module Capkin
   class CLI
     # Using class methods
     class << self
+
+      def menu
+        puts 'Capkin'
+        puts
+        puts 'Run:'
+        puts 'capking list    # List all apk'
+        puts 'capking info    # Show info'
+        puts 'capkin [env]    # Uploads apk'
+        puts 'Where env: production, beta or alpha.'
+        puts
+        exit
+      end
+
       def work!(params)
+        return menu if params.empty?
         project = Capkin::Project.new
 
         config = project.read_capkin_file
@@ -12,7 +26,7 @@ module Capkin
 
         case params.join
         when 'list' then robot.list
-        when 'show_info' then robot.info_apk
+        when 'info' then robot.info_apk
         when 'update_info' then
           info = project.read_apk_info
           robot.edit_info(info)
