@@ -15,6 +15,7 @@ module Capkin
   #
   # https://github.com/google/google-api-ruby-client/issues/140
   #
+  # http://www.rubydoc.info/github/google/google-api-ruby-client/Google/Apis/AndroidpublisherV2/AndroidPublisherService
   class Robot
     STAGE = 'alpha'
     attr_reader :apk, :app, :publisher, :pkg, :stage, :track, :source
@@ -51,8 +52,7 @@ module Capkin
     end
 
     def get_info_apk
-      a = publisher.info_apk
-      return a
+      publisher.info_apk
     end
 
     #
@@ -68,14 +68,14 @@ module Capkin
 
       publisher.edit_info(listing)
 
-      puts Paint["Alterações realizadas :)", :green]
+      puts Paint['Alterações realizadas :)', :green]
     end
 
     # Uploads the APK
     def upload_apk!
       publisher.upload_apk!
 
-      puts Paint["✓ APK uploaded!", :green]
+      puts Paint['✓ APK uploaded!', :green]
     rescue Google::Apis::ClientError => e
       if e.to_s =~ /apkUpgradeVersionConflict/
         puts Paint['✓ Version already exists on play store!', :yellow]
@@ -84,7 +84,5 @@ module Capkin
         raise e
       end
     end
-
-  # End class
-  end
-end
+  end # Robot
+end # Capkin

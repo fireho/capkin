@@ -1,5 +1,4 @@
 module Capkin
-
   #
   # Class that does the access on Google play
   #
@@ -8,7 +7,6 @@ module Capkin
     attr_reader :apk, :app, :pub, :pkg, :stage, :track, :source
 
     def initialize(app, source, stage)
-
       @app = app
       @source = source
       @stage = stage
@@ -63,15 +61,14 @@ module Capkin
     # pub.list_apks     ->  Lists with idcode and sha1
     def list_apks
       list = pub.list_apks(pkg, edit.id)
-      return list.apks
+      list.apks
     end
 
     #
     # Show the play store info about your apk.
     #
     def info_apk
-      apk = pub.get_listing(pkg, edit.id, 'pt-BR')
-      return apk
+      pub.get_listing(pkg, edit.id, 'pt-BR')
     end
 
     #
@@ -84,46 +81,44 @@ module Capkin
       commit!
     end
 
-   # Uploads the APK
-   def upload_apk!
-     puts Paint["Publishing new APK: ➔ Apk: #{@app} Stage: '#{@stage}'", :blue]
-     verify_apk_before_upload
+    # Uploads the APK
+    def upload_apk!
+      puts Paint["Publishing new APK: ➔ Apk: #{@app} Stage: '#{@stage}'", :blue]
+      verify_apk_before_upload
 
-     @apk = pub.upload_apk(pkg, edit.id, upload_source: source)
-     track!
-   end
+      @apk = pub.upload_apk(pkg, edit.id, upload_source: source)
+      track!
+    end
 
-   # Verify if the version apk already existis on Play store
-  def verify_apk_before_upload
-    apk_exists = false
+    # Verify if the version apk already existis on Play store
+    def verify_apk_before_upload
+      apk_exists = false
 
-    list_apks.each do |apk|
-      if current_version == apk.version_code
-        puts Paint["The apk already uploaded to Play Store!", :red]
-        exit
+      list_apks.each do |apk|
+        if current_version == apk.version_code
+          puts Paint['The apk already uploaded to Play Store!', :red]
+          exit
+        end
       end
     end
-  end
 
-  # Update the alpha track to point to this APK
-  # You need to use a track object to change this
-  def track!
-    track.update!(version_codes: [apk.version_code])
+    # Update the alpha track to point to this APK
+    # You need to use a track object to change this
+    def track!
+      track.update!(version_codes: [apk.version_code])
 
-    # Save the modified track object
-    pub.update_track(pkg, edit.id, stage, track)
+      # Save the modified track object
+      pub.update_track(pkg, edit.id, stage, track)
 
-    commit!
-  end
+      commit!
+    end
 
-  # Commit the edit
-  def commit!
-    pub.commit_edit(pkg, edit.id)
-  rescue Google::Apis::ClientError => e
-    puts Paint["✗ Problem commiting: #{e}", :red]
-    raise e
-  end
-
-  # End class
-  end
-end
+    # Commit the edit
+    def commit!
+      pub.commit_edit(pkg, edit.id)
+    rescue Google::Apis::ClientError => e
+      puts Paint["✗ Problem commiting: #{e}", :red]
+      raise e
+    end
+  end # Publisher
+end # Capkin

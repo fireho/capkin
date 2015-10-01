@@ -3,9 +3,7 @@ module Capkin
   class CLI
     # Using class methods
     class << self
-
       def work!(params)
-
         project = Capkin::Project.new
 
         config = project.read_capkin_file
